@@ -31,11 +31,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     
 });
-function formatLyrics(lyrics) {
-    const words = lyrics.split(/(?=[A-Z])/);
-    return words.join('<br>');
-}
-
 
 menuOpen.addEventListener('click', () => sidebar.style.left = '0');
 menuClose.addEventListener('click', () => sidebar.style.left = '-100%');
@@ -89,8 +84,16 @@ const mute = $('.bxs-volume-full');
 const unmute = $('.bxs-volume-mute');
 const songname = $('.lyrics-song__name');
 const lyricsong = $('.lyrics-songs');
-
-
+// list music
+const items = $('.items');
+const pop = $('.item.pop');
+const poplist = $('.item.pop .music-items__list');
+const beat = $('.item.beat');
+const beatlist = $('.item.beat .music-items__list');
+const remix = $('.item.remix');
+const listmusic = $('.music-items__list');
+const itemsgenre = $('.items .item');
+const seeall = $('.genres .header a');
 
 // console.log(playBtn);
 
@@ -100,6 +103,8 @@ const app = {
     isRandom: false,
     isRepeat: false,
     volumeAmount: 1,
+    isgenre : false,
+    ispop: false,
     
     config: JSON.parse(localStorage.getItem(PlAYER_STORAGE_KEY)) || {},
 
@@ -111,8 +116,9 @@ const app = {
             path: "assets/music/y2mate.com - 100 Years Love  NamDuc AnhVu Remix.mp3",
             image: "assets/img/100yearslovelove.jpg",
             lyrics:
-            " Vài cơn nắng phiêu du theo làn khói mong manh<br>Là công chúa hay nàng tiên nữ ở trong tranh<br>Gió cuốn mây mang theo tình ta đến mây ngàn<br>Để anh hát cho em những giai điệu ngân vang<br>Nàng ơi em có muốn theo anh ta về chốn phương xa<br>Về một nơi yên bình mà chỉ có đôi ta<br>Lá khẽ đong đưa trên cành cây chốn xa xăm<br>Em có muốn theo anh ta về chốn trăm năm<br>Vài cơn nắng phiêu du theo làn khói mong manh<br>Là công chúa hay nàng tiên nữ ở trong tranh<br>Gió cuốn mây mang theo tình ta đến mây ngàn<br>Để anh hát cho em những giai điệu ngân vang<br>Em có biết là vài nụ hồng còn vương khi môi em cười<br>Nhưng em yên tâm khi mà anh yêu là anh xác định sẽ cưới<br>Anh hứa sẽ không bao giờ để giọt lệ trên mi em phải rơi<br>Và anh hứa sẽ không đánh mất em khi ta ở tuổi đôi mươi<br>Vài câu nói đường mật của anh có thể khiến em say đắm<br>Nhưng em có thấu cảm giác ngọt ngào khi đôi ta đan tay nắm<br>Anh thì không có gì ngoài một trái tim chân thành<br>Và em có muốn xây đắp tương lai ngôi nhà hạnh phúc cùng anh<br>Vài cơn nắng phiêu du theo làn khói mong manh<br>Là công chúa hay nàng tiên nữ ở trong tranh<br>Gió cuốn mây mang theo tình ta đến mây ngàn<br>Để anh hát cho em những giai điệu ngân vang<br>Nàng ơi em có muốn theo anh ta về chốn phương xa<br>Về một nơi yên bình mà chỉ có đôi ta<br>Lá khẽ đong đưa trên cành cây chốn xa xăm<br>Em có muốn theo anh ta về chốn trăm năm<br>Dù ngoài kia có bão có giông thì đã có anh ở đây rồi<br>Trầu cau nhà anh đã có chỉ chờ em yêu gật đầu một cái thôi<br>Anh biết em vẫn mơ ước về một ngôi nhà mà chúng mình chung đôi<br>Vậy thì gật đầu nhanh đi anh đưa em về rồi chúng mình chung gối<br>Em muốn nhẫn cưới bằng vàng hay là hai bốn cara<br>Em muốn đi trên con Trevita hay là con xe Honda<br>Đối với em thì tình cảm này của anh sẽ luôn là biển cả<br>Thiên thần có ở trên trời anh cũng kéo xuống chúc phúc đôi ta<br>Vài cơn nắng phiêu du theo làn khói mong manh<br>Là công chúa hay nàng tiên nữ ở trong tranh<br>Gió cuốn mây mang theo tình ta đến mây ngàn<br>Để anh hát cho em những giai điệu ngân vang<br>Nàng ơi em có muốn theo anh ta về chốn phương xa<br>Về một nơi yên bình mà chỉ có đôi ta<br>Lá khẽ đong đưa trên cành cây chốn xa xăm<br>Em có muốn theo anh ta về chốn trăm năm<br>Vài cơn nắng phiêu du theo làn khói mong manh<br>Là công chúa hay nàng tiên nữ ở trong tranh<br>Gió cuốn mây mang theo tình ta đến mây ngàn<br>Để anh hát cho em những giai điệu ngân vang<br>Hah hah <br>hah hah"
-            
+            " Vài cơn nắng phiêu du theo làn khói mong manh<br>Là công chúa hay nàng tiên nữ ở trong tranh<br>Gió cuốn mây mang theo tình ta đến mây ngàn<br>Để anh hát cho em những giai điệu ngân vang<br>Nàng ơi em có muốn theo anh ta về chốn phương xa<br>Về một nơi yên bình mà chỉ có đôi ta<br>Lá khẽ đong đưa trên cành cây chốn xa xăm<br>Em có muốn theo anh ta về chốn trăm năm<br>Vài cơn nắng phiêu du theo làn khói mong manh<br>Là công chúa hay nàng tiên nữ ở trong tranh<br>Gió cuốn mây mang theo tình ta đến mây ngàn<br>Để anh hát cho em những giai điệu ngân vang<br>Em có biết là vài nụ hồng còn vương khi môi em cười<br>Nhưng em yên tâm khi mà anh yêu là anh xác định sẽ cưới<br>Anh hứa sẽ không bao giờ để giọt lệ trên mi em phải rơi<br>Và anh hứa sẽ không đánh mất em khi ta ở tuổi đôi mươi<br>Vài câu nói đường mật của anh có thể khiến em say đắm<br>Nhưng em có thấu cảm giác ngọt ngào khi đôi ta đan tay nắm<br>Anh thì không có gì ngoài một trái tim chân thành<br>Và em có muốn xây đắp tương lai ngôi nhà hạnh phúc cùng anh<br>Vài cơn nắng phiêu du theo làn khói mong manh<br>Là công chúa hay nàng tiên nữ ở trong tranh<br>Gió cuốn mây mang theo tình ta đến mây ngàn<br>Để anh hát cho em những giai điệu ngân vang<br>Nàng ơi em có muốn theo anh ta về chốn phương xa<br>Về một nơi yên bình mà chỉ có đôi ta<br>Lá khẽ đong đưa trên cành cây chốn xa xăm<br>Em có muốn theo anh ta về chốn trăm năm<br>Dù ngoài kia có bão có giông thì đã có anh ở đây rồi<br>Trầu cau nhà anh đã có chỉ chờ em yêu gật đầu một cái thôi<br>Anh biết em vẫn mơ ước về một ngôi nhà mà chúng mình chung đôi<br>Vậy thì gật đầu nhanh đi anh đưa em về rồi chúng mình chung gối<br>Em muốn nhẫn cưới bằng vàng hay là hai bốn cara<br>Em muốn đi trên con Trevita hay là con xe Honda<br>Đối với em thì tình cảm này của anh sẽ luôn là biển cả<br>Thiên thần có ở trên trời anh cũng kéo xuống chúc phúc đôi ta<br>Vài cơn nắng phiêu du theo làn khói mong manh<br>Là công chúa hay nàng tiên nữ ở trong tranh<br>Gió cuốn mây mang theo tình ta đến mây ngàn<br>Để anh hát cho em những giai điệu ngân vang<br>Nàng ơi em có muốn theo anh ta về chốn phương xa<br>Về một nơi yên bình mà chỉ có đôi ta<br>Lá khẽ đong đưa trên cành cây chốn xa xăm<br>Em có muốn theo anh ta về chốn trăm năm<br>Vài cơn nắng phiêu du theo làn khói mong manh<br>Là công chúa hay nàng tiên nữ ở trong tranh<br>Gió cuốn mây mang theo tình ta đến mây ngàn<br>Để anh hát cho em những giai điệu ngân vang<br>Hah hah <br>hah hah",
+            genre: "Pop"
+
         },
         {
             name: "Anh Đã Ổn Hơn",
@@ -121,7 +127,8 @@ const app = {
             path: "assets/music/AnhDaOnHon.mp3",
             image: "assets/img/anhsems.jpg",
             lyrics:
-            " Ừ thì anh đã ổn hơn <br>Vẫn muốn biết em đang thấy thế nào <br>Em hỡi có lẽ anh chỉ là thằng điên <br>Đã tìm thấy em <br>Ở một nơi mà sau này anh nhận ra là trong mơ <br>Ừ thì anh đã ổn hơn (I'm ok) <br>Nếu như ta không gặp nhau ở trên tầng lầu <br>Và giá như có thêm lần đầu <br>Để anh nói yêu em, yêu em, yêu em <br>Trao cho em bản tình ca anh viết <br>Chỉ mình em, huh <br>Để em quên đi lệ sầu, được yêu như ngày đầu <br>Chính em, chính em <br>Và có lẽ anh đang chìm sâu <br>Đang không biết là mơ hay thật <br>Nghĩ về em, nên lòng xót xa <br>Cảm xúc đang muốn được kiếm tìm <br>Nên anh lại rót ra <br>Và qua ngày mai <br>Lại phải quên giấc mộng buồn <br>Có em <br>Vẽ thêm nụ cười trong ngần mắt em <br>Vì tất cả những tháng ngày <br>Mình đã đi bên nhau <br>Trao cho em bản tình ca anh viết <br>Chỉ mình em, huh <br>Để em quên đi lệ sầu, được yêu như ngày đầu <br>Chính em, chính em <br>♪ <br>Ừ thì anh đã ổn hơn (I'm ok) <br>Nếu như ta không gặp nhau ở trên tầng lầu <br>Và giá như có thêm lần đầu <br>Để anh nói yêu em, yêu em, yêu em "
+            " Ừ thì anh đã ổn hơn <br>Vẫn muốn biết em đang thấy thế nào <br>Em hỡi có lẽ anh chỉ là thằng điên <br>Đã tìm thấy em <br>Ở một nơi mà sau này anh nhận ra là trong mơ <br>Ừ thì anh đã ổn hơn (I'm ok) <br>Nếu như ta không gặp nhau ở trên tầng lầu <br>Và giá như có thêm lần đầu <br>Để anh nói yêu em, yêu em, yêu em <br>Trao cho em bản tình ca anh viết <br>Chỉ mình em, huh <br>Để em quên đi lệ sầu, được yêu như ngày đầu <br>Chính em, chính em <br>Và có lẽ anh đang chìm sâu <br>Đang không biết là mơ hay thật <br>Nghĩ về em, nên lòng xót xa <br>Cảm xúc đang muốn được kiếm tìm <br>Nên anh lại rót ra <br>Và qua ngày mai <br>Lại phải quên giấc mộng buồn <br>Có em <br>Vẽ thêm nụ cười trong ngần mắt em <br>Vì tất cả những tháng ngày <br>Mình đã đi bên nhau <br>Trao cho em bản tình ca anh viết <br>Chỉ mình em, huh <br>Để em quên đi lệ sầu, được yêu như ngày đầu <br>Chính em, chính em <br>♪ <br>Ừ thì anh đã ổn hơn (I'm ok) <br>Nếu như ta không gặp nhau ở trên tầng lầu <br>Và giá như có thêm lần đầu <br>Để anh nói yêu em, yêu em, yêu em ",
+            genre: "Beat"
             
         },
         {
@@ -130,7 +137,8 @@ const app = {
             time: "",
             path: "assets/music/Tungla.mp3",
             image: "assets/img/tungla.jpg",
-            lyrics:" Anh không còn những thói quen <br> Em không còn nhớ thêm <br>Ta trôi xa một nửa kia <br>Nhẹ như mới đến <br> <br>Một ai nhắc tên em <br>Trong câu chuyện xưa cũ với anh <br>Thật vô tư <br><br>Họ chưa biết hai ta <br>Đã không còn nhau nữa <br>Mọi chuyện đã là quá khứ <br><br>Từng là duy nhất mối tình bình yên đối với anh <br>Từng là những nắm tay mềm thật ấm đối với anh <br>Từng là cảm xúc nhớ nhiều về đêm đối với anh <br>Từng là em <br> <br>Từng là những tháng năm dài Mình chung bước bên nhau <br>Từng là những nắng ban chiều Mà anh bước theo sau <br>Từng là tất cả Những gì đời mang đến cho ta <br>Giờ đã quá xa <br> <br>Vào một lần em nói <br>Ta rồi sẽ cách xa </br>Một lần anh ngất <br>Trong màu mây nắng hạ <br>Chắc có lẽ nên là <br>Kết thúc cách im lặng thôi <br> <br></br>Một ai nhắc tên em <br>Trong câu chuyện xưa cũ với anh <br>Thật vô tư <br>Họ chưa biết hai ta <br>Đã không còn nhau nữa <br>Mọi chuyện đã là quá khứ <br> <br>Từng là duy nhất mối tình bình yên đối với anh <br>Từng là những nắm tay mềm thật ấm đối với anh <br>Từng là cảm xúc nhớ nhiều về đêm đối với anh <br>Từng là em <br> <br>Từng là những tháng năm dài Mình chung bước bên nhau <br>Từng là những nắng ban chiều Mà anh bước theo sau <br>Từng là tất cả Những gì đời mang đến cho ta <br>Giờ đã quá xa <br> <br>Oh no we used to be <br>Used used to be <br>Oh no we used to be lovers <br>Oh no we used to be. <br>Used used to be <br>Oh no we used to be lovers <br>Oh no we used to be <br>Used used to be <br>Oh no we used to be lovers <br>Oh no we used to be <br>Used used to be <br>Oh no we used to be lovers <br> <br>Từng là duy nhất mối tình bình yên đối với anh <br>Từng là những nắm tay mềm thật ấm đối với anh <br>Từng là cảm xúc nhớ nhiều về đêm đối với anh <br>Từng là em <br> <br>Từng là những tháng năm dài Mình chung bước bên nhau <br>Từng là những nắng ban chiều Mà anh bước theo sau <br>Từng là tất cả Những gì đời mang đến cho ta <br>Giờ đã quá xa"
+            lyrics:" Anh không còn những thói quen <br> Em không còn nhớ thêm <br>Ta trôi xa một nửa kia <br>Nhẹ như mới đến <br> <br>Một ai nhắc tên em <br>Trong câu chuyện xưa cũ với anh <br>Thật vô tư <br><br>Họ chưa biết hai ta <br>Đã không còn nhau nữa <br>Mọi chuyện đã là quá khứ <br><br>Từng là duy nhất mối tình bình yên đối với anh <br>Từng là những nắm tay mềm thật ấm đối với anh <br>Từng là cảm xúc nhớ nhiều về đêm đối với anh <br>Từng là em <br> <br>Từng là những tháng năm dài Mình chung bước bên nhau <br>Từng là những nắng ban chiều Mà anh bước theo sau <br>Từng là tất cả Những gì đời mang đến cho ta <br>Giờ đã quá xa <br> <br>Vào một lần em nói <br>Ta rồi sẽ cách xa </br>Một lần anh ngất <br>Trong màu mây nắng hạ <br>Chắc có lẽ nên là <br>Kết thúc cách im lặng thôi <br> <br></br>Một ai nhắc tên em <br>Trong câu chuyện xưa cũ với anh <br>Thật vô tư <br>Họ chưa biết hai ta <br>Đã không còn nhau nữa <br>Mọi chuyện đã là quá khứ <br> <br>Từng là duy nhất mối tình bình yên đối với anh <br>Từng là những nắm tay mềm thật ấm đối với anh <br>Từng là cảm xúc nhớ nhiều về đêm đối với anh <br>Từng là em <br> <br>Từng là những tháng năm dài Mình chung bước bên nhau <br>Từng là những nắng ban chiều Mà anh bước theo sau <br>Từng là tất cả Những gì đời mang đến cho ta <br>Giờ đã quá xa <br> <br>Oh no we used to be <br>Used used to be <br>Oh no we used to be lovers <br>Oh no we used to be. <br>Used used to be <br>Oh no we used to be lovers <br>Oh no we used to be <br>Used used to be <br>Oh no we used to be lovers <br>Oh no we used to be <br>Used used to be <br>Oh no we used to be lovers <br> <br>Từng là duy nhất mối tình bình yên đối với anh <br>Từng là những nắm tay mềm thật ấm đối với anh <br>Từng là cảm xúc nhớ nhiều về đêm đối với anh <br>Từng là em <br> <br>Từng là những tháng năm dài Mình chung bước bên nhau <br>Từng là những nắng ban chiều Mà anh bước theo sau <br>Từng là tất cả Những gì đời mang đến cho ta <br>Giờ đã quá xa",
+            genre: "Beat",
         },
         {
             name: "Hẹn Em Ở Lần Yêu Thứ Hai",
@@ -139,7 +147,8 @@ const app = {
             path:
                 "assets/music/HenEmOLanYeuThu2-NguyennDangTuanVu-8865500.mp3",
             image: "assets/img/Henemolanyeuthu2.jpg",
-            lyrics:" Mọi chuyện rồi cũng sẽ ổn thôi đúng không anh ơi? <br>Là điều em nói lúc em muốn chúng ta xa rời <br>Anh không *** trả lời tin nhắn ấy <br>Cứ giả vờ như mình chẳng nhìn thấy đâu <br>Anh thương cho mối tình của hai đứa <br>Phải kết thúc như vậy sao? <br> <br>Thời gian trôi như gió vội bay qua trời <br>Nhiều chuyện anh cứ chôn thật sâu chẳng muốn mở lời <br>Ngày ngày lo cho tương lai <br>Nhưng em cứ ngỡ anh đã có ai <br>Bên nhau cả quãng đường dài <br>Mà giờ em nói em muốn dừng lại <br> <br>Anh phải làm gì để em đừng nghĩ: <p>Em không quan trọng</p> <br>Nuốt hết đắng cay vào trong lòng <br>Cuộc đời anh như con số 0 <br>Cha mẹ già vất vả, đêm ngủ chẳng ngon <br>Phận làm con anh đây chữ hiếu chưa tròn <br>Anh phải bù đắp cho em bao nhiêu để em chẳng còn thấy thiếu? <br> <br>Dành hết cả thanh xuân này cho nhau, liệu còn bên nhau lúc mai sau? <br>Có phải ngay lúc đầu, em đã chẳng chọn anh đâu? <br>Anh vẫn muốn ngày thành công, sẽ được che chở em <br>Còn em đợi ngày đó để có thể yên tâm rời xa anh <br>Liệu có quá nhẫn tâm? <br><br>Mọi chuyện buồn, mình sẽ vượt qua phải không em à? <br>Là điều anh muốn, nhưng anh chẳng thể nói ra <br>Anh không muốn mình, phải quên mất hết <br>Chẳng muốn mình trôi khỏi ký ức của em <br>Anh thương cho người con gái, cạnh bên anh dẫu chẳng có tương lai <br>Có những đoạn đường, ta buộc phải bước một mình em à <br>Có những nỗi niềm anh gửi vào gió, chẳng muốn nói ra <br>Không ai muốn phải chia xa, rồi làm bạn với người mình yêu nhất cả <br>Bên nhau bao lâu vậy mà, một vài câu nói, em bỗng xa lạ <br> <br>Anh phải làm gì để em đừng nghĩ: Em không quan trọng <br>Nuốt hết đắng cay vào trong lòng <br>Cuộc đời anh như con số 0 <br>Cha mẹ già vất vả, đêm ngủ chẳng ngon <br>Phận làm con anh đây chữ hiếu chưa tròn <br>Anh phải bù đắp cho em bao nhiêu để em chẳng còn thấy thiếu?  <br>Anh phải làm gì để em đừng nghĩ em không quan trọng <br>Nuốt hết đắng cay vào trong lòng cuộc đời anh như con số 0 <br>Em vẫn còn thương anh đúng không? <br>Cuộc đời bao lo toan anh chẳng muốn phiền lòng <br>Năm tháng có quay lại không? <br>Hay chỉ cho ta thêm một khoảng trống <br> <br>Dành hết thanh xuân này bên nhau, bây giờ thanh xuân ấy nơi đâu? <br>Có phải ngay lúc đầu, ta vốn chẳng dành cho nhau? <br>Anh không muốn em phải đau, phải đợi anh quá lâu <br>Chờ đợi từng lời hứa, anh chẳng thể tin bản thân mình được nữa <br>Vậy ta kết thúc được chưa? <br><p>Hẹn em ở lần yêu thứ 2</p> "
+            lyrics:" Mọi chuyện rồi cũng sẽ ổn thôi đúng không anh ơi? <br>Là điều em nói lúc em muốn chúng ta xa rời <br>Anh không *** trả lời tin nhắn ấy <br>Cứ giả vờ như mình chẳng nhìn thấy đâu <br>Anh thương cho mối tình của hai đứa <br>Phải kết thúc như vậy sao? <br> <br>Thời gian trôi như gió vội bay qua trời <br>Nhiều chuyện anh cứ chôn thật sâu chẳng muốn mở lời <br>Ngày ngày lo cho tương lai <br>Nhưng em cứ ngỡ anh đã có ai <br>Bên nhau cả quãng đường dài <br>Mà giờ em nói em muốn dừng lại <br> <br>Anh phải làm gì để em đừng nghĩ: <p>Em không quan trọng</p> <br>Nuốt hết đắng cay vào trong lòng <br>Cuộc đời anh như con số 0 <br>Cha mẹ già vất vả, đêm ngủ chẳng ngon <br>Phận làm con anh đây chữ hiếu chưa tròn <br>Anh phải bù đắp cho em bao nhiêu để em chẳng còn thấy thiếu? <br> <br>Dành hết cả thanh xuân này cho nhau, liệu còn bên nhau lúc mai sau? <br>Có phải ngay lúc đầu, em đã chẳng chọn anh đâu? <br>Anh vẫn muốn ngày thành công, sẽ được che chở em <br>Còn em đợi ngày đó để có thể yên tâm rời xa anh <br>Liệu có quá nhẫn tâm? <br><br>Mọi chuyện buồn, mình sẽ vượt qua phải không em à? <br>Là điều anh muốn, nhưng anh chẳng thể nói ra <br>Anh không muốn mình, phải quên mất hết <br>Chẳng muốn mình trôi khỏi ký ức của em <br>Anh thương cho người con gái, cạnh bên anh dẫu chẳng có tương lai <br>Có những đoạn đường, ta buộc phải bước một mình em à <br>Có những nỗi niềm anh gửi vào gió, chẳng muốn nói ra <br>Không ai muốn phải chia xa, rồi làm bạn với người mình yêu nhất cả <br>Bên nhau bao lâu vậy mà, một vài câu nói, em bỗng xa lạ <br> <br>Anh phải làm gì để em đừng nghĩ: Em không quan trọng <br>Nuốt hết đắng cay vào trong lòng <br>Cuộc đời anh như con số 0 <br>Cha mẹ già vất vả, đêm ngủ chẳng ngon <br>Phận làm con anh đây chữ hiếu chưa tròn <br>Anh phải bù đắp cho em bao nhiêu để em chẳng còn thấy thiếu?  <br>Anh phải làm gì để em đừng nghĩ em không quan trọng <br>Nuốt hết đắng cay vào trong lòng cuộc đời anh như con số 0 <br>Em vẫn còn thương anh đúng không? <br>Cuộc đời bao lo toan anh chẳng muốn phiền lòng <br>Năm tháng có quay lại không? <br>Hay chỉ cho ta thêm một khoảng trống <br> <br>Dành hết thanh xuân này bên nhau, bây giờ thanh xuân ấy nơi đâu? <br>Có phải ngay lúc đầu, ta vốn chẳng dành cho nhau? <br>Anh không muốn em phải đau, phải đợi anh quá lâu <br>Chờ đợi từng lời hứa, anh chẳng thể tin bản thân mình được nữa <br>Vậy ta kết thúc được chưa? <br><p>Hẹn em ở lần yêu thứ 2</p> ",
+            genre: "Pop",
         },
         {
             name: "Lộn Xộn 2",
@@ -148,7 +157,8 @@ const app = {
             path: "assets/music/Lonxon2.mp3",
             image:
                 "assets/img/Lonxon2.jpg",
-            lyrics:"Make me swoon make me sway (yo) <br>With your arms with your rhythm (you know) <br>Let us dance in the rain in the war in the prison <br>Yeah babe anh trở về lại với trường cũ <br>Anh lại viết nhạc vào cái giờ mà mọi người thường ngủ <br>Cảm thấy trống trải dù căn phòng này có đủ giường tủ <br>Hôm nay anh thấy buồn buồn hơn cả nhạc Trường Vũ <br>Chơi nhạc mới đó vậy mà đã gần mười năm rồi <br>Anh buồn vì có những ngày cành lá tâm tư anh lười đâm chồi <br>Buồn những muộn phiền khiến cho đôi khi lòng này cười không nổi <br>Buồn vì có những ngày bất ổn nhưng không có đến một người thăm hỏi oh <br>Miền Bắc mùa này mưa phùn thời tiết khó chịu lắm em <br>Anh đi loanh quanh ngoài đường đôi converse đã lấm lem <br>Trong đầu anh không định hướng lời nhạc này cũng mông lung <br>Bây giờ anh đứng ở đây nhưng tâm hồn ở trên không trung <br>Thật may là anh có rap có nhịp beat để thả vào <br>Như một tấm đệm êm oh mỗi khi mệt anh ngả vào <br>Đã từng hi vọng và cũng đã từng thất vọng nhiều (oh) <br>Dù có một ngày tất cả trôi qua nhẹ như một giấc mộng chiều oh <br>Những quả bóng bay rồi thì cũng sẽ có ngày bị xẹp mất <br>Những ngày còn được chơi rap chắc chắn là những ngày đẹp nhất (yoh) <br>Và tao lại feel như là cơn gió bay trong buổi chiều mượt mà (what) <br>Mừng như thằng nhóc bỗng được mang đến được cho thật nhiều hộp quà (what) <br>Trở về trường cũ cho tao có thể gửi gắm nhiều điều thật thà (yeah) <br>Mỗi ngày còn rap vui như là Lục Vân Tiên gặp Kiều Nguyệt Nga (ha há) <br>Chẳng có gì đáng tự hào khi có những ngày đầy cực khổ <br>Như nước mày uống còn ko nhiều bằng mồ hôi tao từng đổ <br>Tao là thằng con lớn ông bà già tao ai lo <br>Đã có những ngày ăn bữa hôm nay chỉ mong ngày mai no <br>Ai thì cũng như ai muốn có tiền nhà và xe <br>Đêm nằm thật yên giấc không muốn có phiền hà mà care <br>Ai thì cũng như ai thôi bằng cách này hoặc cách khác <br>Và tao thay đổi cuộc đời của tao bằng cách rap <br>Viết một bài nhạc mệt như đi cày trong trưa hè tháng sáu <br>Chất xám tao đưa vào đó thật ra không khác gì bán máu <br>Mày không thể nào mà đem đơn vị bình thường ra đo đạc <br>Âm nhạc của tao giàu có không khác gì vàng trong kho bạc <br>Đừng phán xét tao khi đời của tao sẽ chẳng ai sống cho <br>Mấy thằng thùng rỗng thì thường hay cho mình là cái trống to <br>Nhiều thằng đi bằng hai chân nhưng mà thật ra là giống bò <br>Cái chất của tao không thể nhầm lẫn dù cho tao hoá thành đống tro <br>"
+            lyrics:"Make me swoon make me sway (yo) <br>With your arms with your rhythm (you know) <br>Let us dance in the rain in the war in the prison <br>Yeah babe anh trở về lại với trường cũ <br>Anh lại viết nhạc vào cái giờ mà mọi người thường ngủ <br>Cảm thấy trống trải dù căn phòng này có đủ giường tủ <br>Hôm nay anh thấy buồn buồn hơn cả nhạc Trường Vũ <br>Chơi nhạc mới đó vậy mà đã gần mười năm rồi <br>Anh buồn vì có những ngày cành lá tâm tư anh lười đâm chồi <br>Buồn những muộn phiền khiến cho đôi khi lòng này cười không nổi <br>Buồn vì có những ngày bất ổn nhưng không có đến một người thăm hỏi oh <br>Miền Bắc mùa này mưa phùn thời tiết khó chịu lắm em <br>Anh đi loanh quanh ngoài đường đôi converse đã lấm lem <br>Trong đầu anh không định hướng lời nhạc này cũng mông lung <br>Bây giờ anh đứng ở đây nhưng tâm hồn ở trên không trung <br>Thật may là anh có rap có nhịp beat để thả vào <br>Như một tấm đệm êm oh mỗi khi mệt anh ngả vào <br>Đã từng hi vọng và cũng đã từng thất vọng nhiều (oh) <br>Dù có một ngày tất cả trôi qua nhẹ như một giấc mộng chiều oh <br>Những quả bóng bay rồi thì cũng sẽ có ngày bị xẹp mất <br>Những ngày còn được chơi rap chắc chắn là những ngày đẹp nhất (yoh) <br>Và tao lại feel như là cơn gió bay trong buổi chiều mượt mà (what) <br>Mừng như thằng nhóc bỗng được mang đến được cho thật nhiều hộp quà (what) <br>Trở về trường cũ cho tao có thể gửi gắm nhiều điều thật thà (yeah) <br>Mỗi ngày còn rap vui như là Lục Vân Tiên gặp Kiều Nguyệt Nga (ha há) <br>Chẳng có gì đáng tự hào khi có những ngày đầy cực khổ <br>Như nước mày uống còn ko nhiều bằng mồ hôi tao từng đổ <br>Tao là thằng con lớn ông bà già tao ai lo <br>Đã có những ngày ăn bữa hôm nay chỉ mong ngày mai no <br>Ai thì cũng như ai muốn có tiền nhà và xe <br>Đêm nằm thật yên giấc không muốn có phiền hà mà care <br>Ai thì cũng như ai thôi bằng cách này hoặc cách khác <br>Và tao thay đổi cuộc đời của tao bằng cách rap <br>Viết một bài nhạc mệt như đi cày trong trưa hè tháng sáu <br>Chất xám tao đưa vào đó thật ra không khác gì bán máu <br>Mày không thể nào mà đem đơn vị bình thường ra đo đạc <br>Âm nhạc của tao giàu có không khác gì vàng trong kho bạc <br>Đừng phán xét tao khi đời của tao sẽ chẳng ai sống cho <br>Mấy thằng thùng rỗng thì thường hay cho mình là cái trống to <br>Nhiều thằng đi bằng hai chân nhưng mà thật ra là giống bò <br>Cái chất của tao không thể nhầm lẫn dù cho tao hoá thành đống tro <br>",
+            genre: "Beat",
         },
         {
             name: "Đánh Đổi",
@@ -157,7 +167,8 @@ const app = {
             path: "assets/music/DanhDoi.mp3",
             image:
                 "assets/img/danhdoi.png",
-            lyrics: "Tao đánh đổi màn đêm yên giấc <br>Viết những bài nhạc hay nhất cuộc đời <br>Di sản là nguồn cảm hứng <br>Fan theo răm rắp nhạc tao thuộc lời <br>Trên bàn tiệc của tiên và quỷ <br>Tao là thằng duy nhất được mời <br>Mọi thứ đổ dồn hết vào tao <br>Như kiểu tao là một ván cược hời <br>Tao là đứa con của mặt trăng <br>Mang năng lượng mặt trời <br>Cuộc đời xoay tao như trực thăng <br>Vẫn vượt lên như thể gặp thời <br>Tao không vứt đi bản chất tao <br>Như mấy thằng khác để ví được lời <br>Nếu mày cũng mặt nặng mài nhẹ <br>Vì không đồng ý thì thôi được rồi <br>Shout out cho anh Sea <br>Lời chúc phúc bay trên bầu trời <br>Em mong anh hãy nói với mẹ <br>Cuộc sống con giờ đã đỡ cực rồi <br>Hai anh em đã đổ nước mắt <br>Nhiều câu chuyện về những người tồi <br>Sự đánh đổi này vẫn luôn đẹp <br>Như thể ngày xưa chơi cất nhà chòi**** it <br>Đêm đông lạnh giữa trời Hà Nội <br>Flow tao chảy cùng những niềm đau <br>Như thể đang châm thêm mực vào ngòi <br>Chuỗi hành trình cùng nhiều câu hỏi <br>Ai là cá còn ai là mồi <br>Mọi thứ đều luôn có mặt tối <br>Nhưng liệu mày có sẵn sàng đánh đổi <br>Ngắm nhìn cả thế giới từ xa <br>Damn it's cold <br>Nếu mày hỏi tao ác hay thiện <br>Man I don't know <br>Chắc đây vốn đã là <br>Cái giá cho bao lần đau <br>Sự đánh đổi này cho tao thấy <br>Mọi thứ đã không như ngày đầu <br>Ngắm nhìn cả thế giới từ xa <br>Damn it's cold <br>Nếu mày hỏi tao ác hay thiện <br>Man I don't know <br>Chắc đây vốn đã là <br>Cái giá cho bao lần đau <br>Sự đánh đổi này cho tao thấy <br>Mọi thứ đã không như ngày đầu <br>It's a fair trade <br>Telling all the truth <br>It's a fair trade <br>Ain't none pussy in the way <br>It's a fair trade <br>**** you if you fake it <br>It's a ****ing fair trade oh <br>2020 và tao nổi như hiện tượng <br>Nhưng không chìm vào trong đấy <br>Để rồi chết như thằng ngu <br>Ba năm đánh đổi <br>Để tu thân trong hoạ đời <br>Rồi biết đâu là thật giả <br>Tâm tao nhàn như tiều phu <br>Đảo mắt quan sát <br>Như diều hâu đang đi lượn <br>Im lặng và cười nhếch <br>Với drama và ruồi bu <br>2023 lời tao bắn như cái máy <br>Mà còn *** trượt phát nào <br>Sự đánh đổi đó thằng *** Trò đời quăng tao vào địa ngục <br>Cho tao biết mặt trái của whole game <br>Cho tao bài hit, cho fame <br>Xong nó lấy đi tất cả sao bao đêm <br>Tao vẫn vươn từ dưới đáy đi lên <br>Bật và đòi lại bằng được no shame <br>Chiêm nghiệm và mài giũa thâu đêm <br>Giờ tinh khiết và óng ánh như blue gem <br>Không tìm thấy tao <br>Tao bận đi tu"
+            lyrics: "Tao đánh đổi màn đêm yên giấc <br>Viết những bài nhạc hay nhất cuộc đời <br>Di sản là nguồn cảm hứng <br>Fan theo răm rắp nhạc tao thuộc lời <br>Trên bàn tiệc của tiên và quỷ <br>Tao là thằng duy nhất được mời <br>Mọi thứ đổ dồn hết vào tao <br>Như kiểu tao là một ván cược hời <br>Tao là đứa con của mặt trăng <br>Mang năng lượng mặt trời <br>Cuộc đời xoay tao như trực thăng <br>Vẫn vượt lên như thể gặp thời <br>Tao không vứt đi bản chất tao <br>Như mấy thằng khác để ví được lời <br>Nếu mày cũng mặt nặng mài nhẹ <br>Vì không đồng ý thì thôi được rồi <br>Shout out cho anh Sea <br>Lời chúc phúc bay trên bầu trời <br>Em mong anh hãy nói với mẹ <br>Cuộc sống con giờ đã đỡ cực rồi <br>Hai anh em đã đổ nước mắt <br>Nhiều câu chuyện về những người tồi <br>Sự đánh đổi này vẫn luôn đẹp <br>Như thể ngày xưa chơi cất nhà chòi**** it <br>Đêm đông lạnh giữa trời Hà Nội <br>Flow tao chảy cùng những niềm đau <br>Như thể đang châm thêm mực vào ngòi <br>Chuỗi hành trình cùng nhiều câu hỏi <br>Ai là cá còn ai là mồi <br>Mọi thứ đều luôn có mặt tối <br>Nhưng liệu mày có sẵn sàng đánh đổi <br>Ngắm nhìn cả thế giới từ xa <br>Damn it's cold <br>Nếu mày hỏi tao ác hay thiện <br>Man I don't know <br>Chắc đây vốn đã là <br>Cái giá cho bao lần đau <br>Sự đánh đổi này cho tao thấy <br>Mọi thứ đã không như ngày đầu <br>Ngắm nhìn cả thế giới từ xa <br>Damn it's cold <br>Nếu mày hỏi tao ác hay thiện <br>Man I don't know <br>Chắc đây vốn đã là <br>Cái giá cho bao lần đau <br>Sự đánh đổi này cho tao thấy <br>Mọi thứ đã không như ngày đầu <br>It's a fair trade <br>Telling all the truth <br>It's a fair trade <br>Ain't none pussy in the way <br>It's a fair trade <br>**** you if you fake it <br>It's a ****ing fair trade oh <br>2020 và tao nổi như hiện tượng <br>Nhưng không chìm vào trong đấy <br>Để rồi chết như thằng ngu <br>Ba năm đánh đổi <br>Để tu thân trong hoạ đời <br>Rồi biết đâu là thật giả <br>Tâm tao nhàn như tiều phu <br>Đảo mắt quan sát <br>Như diều hâu đang đi lượn <br>Im lặng và cười nhếch <br>Với drama và ruồi bu <br>2023 lời tao bắn như cái máy <br>Mà còn *** trượt phát nào <br>Sự đánh đổi đó thằng *** Trò đời quăng tao vào địa ngục <br>Cho tao biết mặt trái của whole game <br>Cho tao bài hit, cho fame <br>Xong nó lấy đi tất cả sao bao đêm <br>Tao vẫn vươn từ dưới đáy đi lên <br>Bật và đòi lại bằng được no shame <br>Chiêm nghiệm và mài giũa thâu đêm <br>Giờ tinh khiết và óng ánh như blue gem <br>Không tìm thấy tao <br>Tao bận đi tu",
+            genre: "Remix",
         },
         {
             name: "Những Lời Hứa Bỏ Quên",
@@ -268,7 +279,6 @@ const app = {
                         </div>
                     </div>
                     <div class="actions">
-                        <p>${song.time}</p>
                         <div class="icon">
                             <i class='bx bx-play' data-index="${index}"></i>
                             <i class='bx bx-pause' data-index="${index}"></i>
@@ -281,6 +291,104 @@ const app = {
         playlist.innerHTML = htmls.join('');
     },
 
+    renderlistpop: function(){
+        // Lọc danh sách các bài hát theo từng thể loại
+        const popSongs = this.songs.filter(song => song.genre === 'Pop');
+    
+        //Tạo HTML cho danh sách các bài hát theo từng thể loại
+        const popHtmls = popSongs.map((song, index) =>{
+            return `
+                <div class="itemlist ${index === this.currentIndex ? 'active' : ''}" data-song-index="${index}">
+                    <div class="info">                     
+                        <img src="${song.image}" alt="">
+                        <div class="details">
+                            <h5>${song.name}</h5>
+                            <p>${song.singer} - ${song.genre}</p>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <div class="icon">
+                            <i class='bx bx-play' data-index="${index}"></i>
+                            <i class='bx bx-pause' data-index="${index}"></i>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        // const poplist = document.querySelector('.item.pop .music-items__list');
+        if (popHtmls.length > 0) {
+            poplist.innerHTML = popHtmls.join('');
+        }else{
+            poplist.innerHTML = '<p>No songs available</p>';
+        }
+    },
+    renderlistbeat: function(){
+        // Lọc danh sách các bài hát theo từng thể loại
+        const beatSongs = this.songs.filter(song => song.genre === 'Beat');
+    
+        //Tạo HTML cho danh sách các bài hát theo từng thể loại
+        const beatHtmls = beatSongs.map((song, index) =>{
+            // Tạo HTML cho danh sách các bài hát thể loại 'Beat'
+            return `
+                <div class="itemlist ${index === this.currentIndex ? 'active' : ''}" data-song-index="${index}">
+                    <div class="info">                     
+                        <img src="${song.image}" alt="">
+                        <div class="details">
+                            <h5>${song.name}</h5>
+                            <p>${song.singer} - ${song.genre}</p>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <div class="icon">
+                            <i class='bx bx-play' data-index="${index}"></i>
+                            <i class='bx bx-pause' data-index="${index}"></i>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        // const beatlist = document.querySelector('.item.beat .music-items__list');
+        if (beatHtmls.length > 0) {
+            beatlist.innerHTML = beatHtmls.join('');
+        }else{
+            beatlist.innerHTML = '<p>No songs available</p>';
+        }
+        
+    },
+    renderlistremix: function(){
+        // Lọc danh sách các bài hát theo từng thể loại
+        const remixSongs = this.songs.filter(song => song.genre === 'Remix');
+    
+        //Tạo HTML cho danh sách các bài hát theo từng thể loại
+        const remixHtmls = remixSongs.map((song, index) =>{
+            // Tạo HTML cho danh sách các bài hát thể loại 'Beat'
+            return `
+                <div class="itemlist ${index === this.currentIndex ? 'active' : ''}" data-song-index="${index}">
+                    <div class="info">                     
+                        <img src="${song.image}" alt="">
+                        <div class="details">
+                            <h5>${song.name}</h5>
+                            <p>${song.singer} - ${song.genre}</p>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <div class="icon">
+                            <i class='bx bx-play' data-index="${index}"></i>
+                            <i class='bx bx-pause' data-index="${index}"></i>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        const remixContainer = document.querySelector('.item.remix .music-items__list');
+        if (remixHtmls.length > 0) {
+            remixContainer.innerHTML = remixHtmls.join('');
+        }else{
+            remixContainer.innerHTML = '<p>No songs available</p>';
+        }
+    },
+    
+
     defineProperties: function(){
         Object.defineProperty(this,'currentSong',{
             get: function(){
@@ -292,15 +400,15 @@ const app = {
     handleEvents: function(){
         const _this = this
         const cdWidth = cd.offsetWidth
-
+        
         // Xử lý CD quay và dừng
-        // const cdThumbAnimate = cdThumb.animate([
-        //     { transform: 'rotate(360deg'}
-        // ], {
-        //     duration: 10000, //10 seconds
-        //     iterations: Infinity
-        // })
-        // cdThumbAnimate.pause() 
+        const cdThumbAnimate = cdThumb.animate([
+            { transform: 'rotate(360deg)'}
+        ], {
+            duration: 10000, // 10 seconds
+            iterations: Infinity
+        });
+        cdThumbAnimate.pause();
 
         //Xử lý phóng to / thu nhỏ
         document.onscroll = function(){
@@ -312,10 +420,7 @@ const app = {
 
             // console.log(newcdWidth);
         }
-
-
         // Xử lý khi click vào cả hai nút play và listen
-
         function handlePlay() {
             if (_this.isPlaying) {
                 audio.pause();
@@ -333,13 +438,17 @@ const app = {
         audio.onplay = function(){
             _this.isPlaying = true;
             player.classList.add('playing')
-            // cdThumbAnimate.play()
+            if (window.innerWidth <= 600) {
+                cdThumbAnimate.play();
+            }else{
+                cdThumbAnimate.pause();
+            }
         }
         //Khi song bi pause
         audio.onpause = function(){
             _this.isPlaying = false;
             player.classList.remove('playing')
-            // cdThumbAnimate.pause()
+            cdThumbAnimate.pause()
         }
 
         //khi tiến độ bài hát thay đổi
@@ -480,25 +589,79 @@ const app = {
             }
         }
 
+        //Xử lý sự kiện click vào items pop
+        pop.onclick = function(){
+            // _this.isgenre = !_this.isgenre
+            // _this.setConfig('isgenre', _this.isgenre)
+            items.classList.add('active')
+            pop.classList.add('active')
+        }
+        //Xử lý sự kiện click vào items beat
+        beat.onclick = function(e){
+            // _this.isgenre = !_this.isgenre
+            // _this.setConfig('isgenre', _this.isgenre)
+            items.classList.add('active')
+            // beat.classList.add('active', _this.isgenre)
+            beat.classList.add('active')
+        }
+
+        // Xử lý sự kiện click see all
+        seeall.onclick = function(){
+            items.classList.remove('active')
+            pop.classList.remove('active', _this.isgenre)
+            beat.classList.remove('active', _this.isgenre)
+        }
+
         // Lắng nghe hành vi click vào playlist
-        playlist.onclick = function(e){
-            const songNode = e.target.closest('.item:not(.active)')
-            if( songNode || !e.target.closest('info')){ 
-                
+        playlist.addEventListener('click', function(e) {
+            const songNode = e.target.closest('.item:not(.active)');
+            if (songNode || !e.target.closest('info')) { 
                 //Xử lý click vào playlist
-                if(songNode){
-                    console.log(songNode.dataset.index)
-                    _this.currentIndex = Number(songNode.dataset.index)
-                    _this.loadCurrentSong()
-                    _this.render()
-                    audio.play()
+                if (songNode) {
+                    console.log(songNode.dataset.index);
+                    _this.currentIndex = Number(songNode.dataset.index);
+                    _this.loadCurrentSong();
+                    _this.render();
+                    // _this.renderlistpop();
+                    // _this.renderlistbeat();
+                    audio.play();
                 }
                 // Xử lý khi click vào song option
-                if(e.target.closest('.option')){
-                    
+                if (e.target.closest('.option')) {
+                    // Code xử lý khi click vào song option
                 }
             }
-        }
+        });
+
+        // Lắng nghe hành vi click vào listmusic pop
+        poplist.addEventListener('click', function(e) {
+            const songpop = e.target.closest('.itemlist:not(.active)');
+            if (songpop) { 
+                //Xử lý click vào danh sách pop
+                const selectedIndex = Number(songpop.dataset.songIndex);
+                _this.currentIndex = selectedIndex;
+                const selectedSong = poplist[selectedIndex];
+                _this.renderlistpop();
+                audio.play();
+                _this.loadCurrentSong(selectedSong);
+                
+            }
+        });
+
+        // Lắng nghe hành vi click vào listmusic beat
+        beatlist.addEventListener('click', function(e) {
+            const songbeat = e.target.closest('.itemlist:not(.active)');
+            if (songbeat) { 
+                //Xử lý click vào danh sách beat
+                const selectedIndex = Number(songbeat.dataset.songIndex);
+                _this.currentIndex = selectedIndex;
+                const selectedSong = beatlist[selectedIndex];
+                _this.loadCurrentSong(selectedSong);
+                _this.renderlistbeat();
+                audio.play();
+            }
+        });
+
     },
 
     // Kéo tới active song
@@ -566,6 +729,10 @@ const app = {
         
         // Lấy ra bài hát
         this.render()
+
+        // Lấy bài hát trong list music
+        this.renderlistpop()
+        this.renderlistbeat()
         
         //Load thông tin bài hát bên trái
         // this.loadCurrentImg()
@@ -578,7 +745,7 @@ const app = {
         this.handleEvents()
 
         //Hiển thị trạng thái ban đầu của button repeat và random
-        randomBtn.classList.toggle('active', _this.isRepeat)
+        repeatBtn.classList.toggle('active', _this.isRepeat)
         randomBtn.classList.toggle('active', _this.isRandom)
     }
 }
