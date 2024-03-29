@@ -969,8 +969,25 @@ html,body{
     margin-top: 24px;
 }
 
-.container .right-section .music-player .player-actions .buttons .btn-repeat.active i,
-.container .right-section .music-player .player-actions .buttons .btn-random.active i{
+.container .right-section .music-player .player-actions .buttons .btn-repeat .bx-atom {
+    display: none;
+}
+
+.container .right-section .music-player .player-actions .buttons .btn-repeat .bx-repeat.active ,
+.container .right-section .music-player .player-actions .buttons .btn-repeat .bx-atom.active {
+    color: #d63e9e;
+}
+
+.container .right-section .music-player .player-actions .buttons .btn-repeat .bx-atom:active ,
+.container .right-section .music-player .player-actions .buttons .btn-repeat .bx-repeat:active {
+    opacity: 0.5;
+}
+
+.container .right-section .music-player .player-actions .buttons .btn-repeat .bx-atom.active {
+    display: flex;
+}
+
+.container .right-section .music-player .player-actions .buttons .btn-random.active {
     color: #d63e9e;
 }
 
