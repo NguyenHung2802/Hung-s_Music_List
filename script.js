@@ -70,6 +70,7 @@ const progress = $("#progress");
 const prevBtn = $(".btn-prev");
 const nextBtn = $(".btn-next");
 const randomBtn = $(".btn-random");
+const repeat = $(".btn-repeat");
 const repeatBtn = $(".bx-repeat");
 const atomBtn = $(".bx-atom");
 const playlist = $('.music-items');
@@ -79,7 +80,7 @@ const righting = $('.info h4');
 const icon = $('.icon');
 const currentTime = $('.time-end')
 const duration = $('.time-start')
-const volume = $('.volumne__amount');
+const volume = $('.volumne');
 const volumeProgress = $('.volumne__amount');
 const mute = $('.bxs-volume-full');
 const unmute = $('.bxs-volume-mute');
@@ -111,6 +112,7 @@ const app = {
     isPlaying: false,
     isRandom: false,
     isRepeat: false,
+    isatom: false,
     volumeAmount: 1,
     isgenre : false,
 
@@ -756,11 +758,12 @@ const app = {
                 const progressPercent = Math.floor(audio.currentTime / audio.duration * 100)
                 progress.value = progressPercent
             }
+            updateUI();
         }
 
         //Xử lý khi tua song
-        progress.onchange = function(e){
-            const seekTime = audio.duration / 100 * e.target.value
+        progress.oninput = function(e){
+            const seekTime = audio.duration / 100 * e.target.value 
             audio.currentTime = seekTime
         }
 
@@ -773,12 +776,6 @@ const app = {
             // Cập nhật giao diện người dùng dựa trên thời gian hiện tại mới
             updateUI();
         });
-
-        // Thêm sự kiện "ontimeupdate" cho audio
-        audio.ontimeupdate = function(){
-            // Cập nhật giao diện người dùng dựa trên thời gian hiện tại mới
-            updateUI();
-        }
 
         // Hàm cập nhật giao diện người dùng
         function updateUI() {
@@ -812,7 +809,7 @@ const app = {
             _this.render()
             _this.scrollToActiveSong()
         }
-
+        //khi prev song
         prevBtn.onclick = function(){
             if(_this.isRandom){
                 _this.playRandomSong()
@@ -828,19 +825,47 @@ const app = {
             _this.setConfig('isRandom', _this.isRandom)
             randomBtn.classList.toggle('active', _this.isRandom)
         }
-
-        // Xử lý lặp lại một bài hát
-        repeatBtn.onclick = function(e){
-            _this.isRepeat = !_this.isRepeat
-            _this.setConfig('isRepeat', _this.isRepeat)
-            repeatBtn.classList.toggle('active', _this.isRepeat)
+        let clickCount = 0;
+        // Xử lý lặp lại bài hát
+        repeat.onclick = function(e) {
+            clickCount++;
+            if (clickCount === 1) {
+                // Lặp lại một bài hát
+                _this.isRepeat = true;
+                _this.isatom = false;
+                _this.setConfig('isRepeat', _this.isRepeat)
+                repeat.classList.add('active')
+                repeatBtn.classList.add('active', _this.isRepeat)
+            } else if (clickCount === 2) {
+                // Lặp lại tất cả bài hát
+                _this.isRepeat = false;
+                _this.isatom = true;
+                _this.setConfig('isatom', _this.isatom)
+                repeatBtn.classList.remove('active')
+                atomBtn.classList.add('active', _this.isatom)
+            } else {
+                // Trở lại trạng thái ban đầu
+                _this.isRepeat = false;
+                _this.isatom = false;
+                clickCount = 0;
+                repeat.classList.remove('active')
+                repeatBtn.classList.remove('active', _this.isRepeat)
+                atomBtn.classList.remove('active', _this.isatom)
+            }
         }
 
         //Xử lý next song khi radio ended
         audio.onended = function(){
             if(_this.isRepeat){
                 audio.play()
-            }else{
+            }
+            else if(_this.isatom){
+                _this.nextSong();
+                audio.play();
+                _this.render();
+                _this.scrollToActiveSong();
+            }
+            else{
                 audio.click()
             }
         }

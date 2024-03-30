@@ -968,23 +968,33 @@ html,body{
     gap: 30px;
     margin-top: 24px;
 }
-
+/* Ban đầu */
 .container .right-section .music-player .player-actions .buttons .btn-repeat .bx-atom {
     display: none;
 }
-
-.container .right-section .music-player .player-actions .buttons .btn-repeat .bx-repeat.active ,
-.container .right-section .music-player .player-actions .buttons .btn-repeat .bx-atom.active {
+/* Click đầu */
+.container .right-section .music-player .player-actions .buttons .btn-repeat.active .bx-repeat.active {
+    display: flex;
     color: #d63e9e;
 }
+.container .right-section .music-player .player-actions .buttons .btn-repeat.active .bx-atom{
+    display: none;
+    color: #d63e9e;
+}
+/* Click hai */
+.container .right-section .music-player .player-actions .buttons .btn-repeat.active .bx-atom.active{
+    display: flex;
+    color: #d63e9e;
+}
+
+.container .right-section .music-player .player-actions .buttons .btn-repeat.active .bx-repeat {
+    display: none;
+}
+
 
 .container .right-section .music-player .player-actions .buttons .btn-repeat .bx-atom:active ,
 .container .right-section .music-player .player-actions .buttons .btn-repeat .bx-repeat:active {
     opacity: 0.5;
-}
-
-.container .right-section .music-player .player-actions .buttons .btn-repeat .bx-atom.active {
-    display: flex;
 }
 
 .container .right-section .music-player .player-actions .buttons .btn-random.active {
