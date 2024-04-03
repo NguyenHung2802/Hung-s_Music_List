@@ -997,7 +997,11 @@ html,body{
     opacity: 0.5;
 }
 
-.container .right-section .music-player .player-actions .buttons .btn-random.active {
+.container .right-section .music-player .player-actions .buttons .btn-random i {
+    font-size: 24px;;
+}
+
+.container .right-section .music-player .player-actions .buttons .btn-random.active i {
     color: #d63e9e;
 }
 
@@ -1415,6 +1419,8 @@ html,body{
     .container main .playlist .music-list .music-items{
         flex: 1;
         overflow-y: scroll; 
+        padding: 0px;
+        margin: 0px;
     }
     
     
@@ -1499,6 +1505,46 @@ html,body{
         font-size: 22px;
     } 
 
+}
+@media screen and (max-width: 500px){
+    body{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        
+    }
+    .container{
+        display: flex;
+        justify-content: center;
+        position: relative;
+        margin-top: -20px;
+        /* width: 550px; */
+        /* margin: 0px; */
+        padding: 0px;
+    }
+    .container .right-section{
+        width: 100%;
+        padding: 20px 0;
+    }
+
+    .container main .playlist .music-list{
+        width: 100%;
+        padding: 0px 0px;
+    }
+
+    .container main{
+        width: 100%;
+        padding: 20px 6px;
+    }
+
+    .container main .playlist .music-list .music-items{
+        width: 100%;
+        padding: 0px;
+        margin: 0px;
+        
+    }
+    
+    
 }
 
 

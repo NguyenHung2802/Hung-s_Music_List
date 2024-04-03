@@ -94,6 +94,12 @@ const poplist = $('.item.pop .music-items__list');
 const beat = $('.item.beat');
 const beatlist = $('.item.beat .music-items__list');
 const remix = $('.item.remix');
+let beatSongs = [];
+let popSongs = [];
+let remixSongs = [];
+let rapSongs = [];
+let indieSongs = [];
+let periodSongs = [];
 const remixlist = $('.item.remix .music-items__list');
 const rap = $('.item.rap');
 const raplist = $('.item.rap .music-items__list');
@@ -115,7 +121,8 @@ const app = {
     isatom: false,
     volumeAmount: 1,
     isgenre : false,
-
+    islistSelected: false, // Biến cờ xác định danh sách đang được chọn
+    currentPlaylistState: { currentIndex: 0 }, // Trạng thái hiện tại của danh sách playlist
     
     config: JSON.parse(localStorage.getItem(PlAYER_STORAGE_KEY)) || {},
 
@@ -125,7 +132,7 @@ const app = {
             singer: "AnhVu",
             time: "",
             path: "assets/music/y2mate.com - 100 Years Love  NamDuc AnhVu Remix.mp3",
-            image: "assets/img/100yearslovelove.jpg",
+            image: "assets/img/100y.jpg",
             lyrics:
             " Vài cơn nắng phiêu du theo làn khói mong manh<br>Là công chúa hay nàng tiên nữ ở trong tranh<br>Gió cuốn mây mang theo tình ta đến mây ngàn<br>Để anh hát cho em những giai điệu ngân vang<br>Nàng ơi em có muốn theo anh ta về chốn phương xa<br>Về một nơi yên bình mà chỉ có đôi ta<br>Lá khẽ đong đưa trên cành cây chốn xa xăm<br>Em có muốn theo anh ta về chốn trăm năm<br>Vài cơn nắng phiêu du theo làn khói mong manh<br>Là công chúa hay nàng tiên nữ ở trong tranh<br>Gió cuốn mây mang theo tình ta đến mây ngàn<br>Để anh hát cho em những giai điệu ngân vang<br>Em có biết là vài nụ hồng còn vương khi môi em cười<br>Nhưng em yên tâm khi mà anh yêu là anh xác định sẽ cưới<br>Anh hứa sẽ không bao giờ để giọt lệ trên mi em phải rơi<br>Và anh hứa sẽ không đánh mất em khi ta ở tuổi đôi mươi<br>Vài câu nói đường mật của anh có thể khiến em say đắm<br>Nhưng em có thấu cảm giác ngọt ngào khi đôi ta đan tay nắm<br>Anh thì không có gì ngoài một trái tim chân thành<br>Và em có muốn xây đắp tương lai ngôi nhà hạnh phúc cùng anh<br>Vài cơn nắng phiêu du theo làn khói mong manh<br>Là công chúa hay nàng tiên nữ ở trong tranh<br>Gió cuốn mây mang theo tình ta đến mây ngàn<br>Để anh hát cho em những giai điệu ngân vang<br>Nàng ơi em có muốn theo anh ta về chốn phương xa<br>Về một nơi yên bình mà chỉ có đôi ta<br>Lá khẽ đong đưa trên cành cây chốn xa xăm<br>Em có muốn theo anh ta về chốn trăm năm<br>Dù ngoài kia có bão có giông thì đã có anh ở đây rồi<br>Trầu cau nhà anh đã có chỉ chờ em yêu gật đầu một cái thôi<br>Anh biết em vẫn mơ ước về một ngôi nhà mà chúng mình chung đôi<br>Vậy thì gật đầu nhanh đi anh đưa em về rồi chúng mình chung gối<br>Em muốn nhẫn cưới bằng vàng hay là hai bốn cara<br>Em muốn đi trên con Trevita hay là con xe Honda<br>Đối với em thì tình cảm này của anh sẽ luôn là biển cả<br>Thiên thần có ở trên trời anh cũng kéo xuống chúc phúc đôi ta<br>Vài cơn nắng phiêu du theo làn khói mong manh<br>Là công chúa hay nàng tiên nữ ở trong tranh<br>Gió cuốn mây mang theo tình ta đến mây ngàn<br>Để anh hát cho em những giai điệu ngân vang<br>Nàng ơi em có muốn theo anh ta về chốn phương xa<br>Về một nơi yên bình mà chỉ có đôi ta<br>Lá khẽ đong đưa trên cành cây chốn xa xăm<br>Em có muốn theo anh ta về chốn trăm năm<br>Vài cơn nắng phiêu du theo làn khói mong manh<br>Là công chúa hay nàng tiên nữ ở trong tranh<br>Gió cuốn mây mang theo tình ta đến mây ngàn<br>Để anh hát cho em những giai điệu ngân vang<br>Hah hah <br>hah hah",
             genre: "Remix"
@@ -494,7 +501,7 @@ const app = {
     
     renderlistpop: function(){
         // Lọc danh sách các bài hát theo từng thể loại
-        const popSongs = this.songs.filter(song => song.genre === 'Pop');
+        popSongs = this.songs.filter(song => song.genre === 'Pop');
     
         //Tạo HTML cho danh sách các bài hát theo từng thể loại
         const popHtmls = popSongs.map((song, index) =>{
@@ -526,7 +533,7 @@ const app = {
 
     renderlistbeat: function(){
         // Lọc danh sách các bài hát theo từng thể loại
-        const beatSongs = this.songs.filter(song => song.genre === 'Beat');
+        beatSongs = this.songs.filter(song => song.genre === 'Beat');
     
         //Tạo HTML cho danh sách các bài hát theo từng thể loại
         const beatHtmls = beatSongs.map((song, index) =>{
@@ -560,7 +567,7 @@ const app = {
 
     renderlistremix: function(){
         // Lọc danh sách các bài hát theo từng thể loại
-        const remixSongs = this.songs.filter(song => song.genre === 'Remix');
+        remixSongs = this.songs.filter(song => song.genre === 'Remix');
     
         //Tạo HTML cho danh sách các bài hát theo từng thể loại
         const remixHtmls = remixSongs.map((song, index) =>{
@@ -593,7 +600,7 @@ const app = {
 
     renderlistrap: function(){
         // Lọc danh sách các bài hát theo từng thể loại
-        const rapSongs = this.songs.filter(song => song.genre === 'Rap');
+        rapSongs = this.songs.filter(song => song.genre === 'Rap');
     
         //Tạo HTML cho danh sách các bài hát theo từng thể loại
         const rapHtmls = rapSongs.map((song, index) =>{
@@ -626,7 +633,7 @@ const app = {
 
     renderlistindie: function(){
         // Lọc danh sách các bài hát theo từng thể loại
-        const indieSongs = this.songs.filter(song => song.genre === 'Indie');
+        indieSongs = this.songs.filter(song => song.genre === 'Indie');
     
         //Tạo HTML cho danh sách các bài hát theo từng thể loại
         const indieHtmls = indieSongs.map((song, index) =>{
@@ -659,7 +666,7 @@ const app = {
 
     renderlistperiod: function(){
         // Lọc danh sách các bài hát theo từng thể loại
-        const periodSongs = this.songs.filter(song => song.genre === 'Period');
+        periodSongs = this.songs.filter(song => song.genre === 'Period');
     
         //Tạo HTML cho danh sách các bài hát theo từng thể loại
         const periodHtmls = periodSongs.map((song, index) =>{
@@ -689,17 +696,63 @@ const app = {
             periodlist.innerHTML = '<p>No songs available</p>';
         }
     },
-    
+
     defineProperties: function(){
-        Object.defineProperty(this,'currentSong',{
+        let _this = this;
+        // Định nghĩa currentSong
+        Object.defineProperty(this, 'currentSong', {
             get: function(){
-                return this.songs[this.currentIndex];
+                return this.songs[this.currentIndex]; 
+            }
+        });
+    
+        Object.defineProperty(this, 'currentSongBeat', {
+            get: function(){
+                return beatSongs[_this.currentIndex];
+            }
+        });
+
+        Object.defineProperty(this, 'currentSongPop', {
+            get: function(){
+                return popSongs[_this.currentIndex];
+            }
+        });
+
+        Object.defineProperty(this, 'currentSongRemix', {
+            get: function(){
+                return remixSongs[_this.currentIndex];
+            }
+        });
+
+        Object.defineProperty(this, 'currentSongRap', {
+            get: function(){
+                return rapSongs[_this.currentIndex];
+            }
+        });
+
+        Object.defineProperty(this, 'currentSongIndie', {
+            get: function(){
+                return indieSongs[_this.currentIndex];
+            }
+        });
+        
+        Object.defineProperty(this, 'currentSongPeriod', {
+            get: function(){
+                return periodSongs[_this.currentIndex];
             }
         });
     },
     
+    // defineProperties: function(){
+    //     Object.defineProperty(this,'currentSong',{
+    //         get: function(){
+    //             return this.songs[this.currentIndex];
+    //         }
+    //     });
+    // },
+    
     handleEvents: function(){
-        const _this = this
+        let _this = this
         const cdWidth = cd.offsetWidth
         
         // Xử lý CD quay và dừng
@@ -978,14 +1031,13 @@ const app = {
 
         // Lắng nghe hành vi click vào playlist
         playlist.addEventListener('click', function(e) {
+            islistSelected = true;
             const songNode = e.target.closest('.item:not(.active)');
             if (songNode || !e.target.closest('info')) { 
                 //Xử lý click vào playlist
                 if (songNode) {
-                    // console.log(songNode.dataset.index);
                     _this.currentIndex = Number(songNode.dataset.index);
                     _this.loadCurrentSong();
-                    // _this.renderlistpop();
                     _this.render();
                     audio.play();
                 }
@@ -998,13 +1050,20 @@ const app = {
 
         // Lắng nghe hành vi click vào listmusic pop
         poplist.addEventListener('click', function(e) {
+            ispoplistSelected = true;
+            islistSelected = false;
+            isbeatlistSelected = false;
+            isindielistSelected = false;
+            isremixlistSelected = false;
+            israplistSelected = false;
+            isperiodlistSelected = false;
             const songpop = e.target.closest('.itemlist:not(.active)');
             if(songpop) {
                 // Xử lý click vào danh sách pop
                 const selectedIndex = Number(songpop.dataset.index);
                 // Lấy bài hát từ danh sách pop đã lọc
+                const selectedSong = popSongs[selectedIndex]; 
                 _this.currentIndex = selectedIndex;
-                const selectedSong = poplist[selectedIndex]; 
                 _this.loadCurrentSong(selectedSong); 
                 _this.renderlistpop();
                 audio.play();
@@ -1013,12 +1072,20 @@ const app = {
         
         // Lắng nghe hành vi click vào listmusic beat
         beatlist.addEventListener('click', function(e) {
+            isbeatlistSelected = true;
+            islistSelected = false;
+            ispoplistSelected = false;
+            isindielistSelected = false;
+            isremixlistSelected = false;
+            israplistSelected = false;
+            isperiodlistSelected = false;
             const songbeat = e.target.closest('.itemlist:not(.active)');
             if (songbeat) { 
                 //Xử lý click vào danh sách beat
                 const selectedIndex = Number(songbeat.dataset.index);
+                // Lấy bài hát từ danh sách beat đã lọc
+                const selectedSong = beatSongs[selectedIndex];
                 _this.currentIndex = selectedIndex;
-                const selectedSong = beatlist[selectedIndex];
                 _this.loadCurrentSong(selectedSong);
                 _this.renderlistbeat();
                 audio.play();
@@ -1027,12 +1094,19 @@ const app = {
         
         // Lắng nghe hành vi click vào listmusic remix
         remixlist.addEventListener('click', function(e) {
+            isremixlistSelected = true;
+            islistSelected = false;
+            ispoplistSelected = false;
+            isindielistSelected = false;
+            isbeatlistSelected = false;
+            israplistSelected = false;
+            isperiodlistSelected = false;
             const songremix = e.target.closest('.itemlist:not(.active)');
             if (songremix) { 
                 //Xử lý click vào danh sách pop
                 const selectedIndex = Number(songremix.dataset.index);
+                const selectedSong = remixSongs[selectedIndex];
                 _this.currentIndex = selectedIndex;
-                const selectedSong = remixlist[selectedIndex];
                 _this.loadCurrentSong(selectedSong);
                 _this.renderlistremix();
                 audio.play();
@@ -1041,12 +1115,19 @@ const app = {
         });
         // Lắng nghe hành vi click vào listmusic rap
         raplist.addEventListener('click', function(e) {
+            israplistSelected = true;
+            isbeatlistSelected = false;
+            islistSelected = false;
+            ispoplistSelected = false;
+            isindielistSelected = false;
+            isremixlistSelected = false;
+            isperiodlistSelected = false;
             const songrap = e.target.closest('.itemlist:not(.active)');
             if (songrap) { 
                 //Xử lý click vào danh sách pop
                 const selectedIndex = Number(songrap.dataset.index);
                 _this.currentIndex = selectedIndex;
-                const selectedSong = raplist[selectedIndex];
+                const selectedSong = rapSongs[selectedIndex];
                 _this.loadCurrentSong(selectedSong);
                 _this.renderlistrap();
                 audio.play();
@@ -1055,12 +1136,19 @@ const app = {
         });
         // Lắng nghe hành vi click vào listmusic indie
         indielist.addEventListener('click', function(e) {
+            isindielistSelected = true;
+            isbeatlistSelected = false;
+            islistSelected = false;
+            ispoplistSelected = false;
+            isremixlistSelected = false;
+            israplistSelected = false;
+            isperiodlistSelected = false;
             const songindie = e.target.closest('.itemlist:not(.active)');
             if (songindie) { 
                 //Xử lý click vào danh sách pop
                 const selectedIndex = Number(songindie.dataset.index);
                 _this.currentIndex = selectedIndex;
-                const selectedSong = indielist[selectedIndex];
+                const selectedSong = indieSongs[selectedIndex];
                 _this.loadCurrentSong(selectedSong);
                 _this.renderlistindie();
                 audio.play();
@@ -1069,12 +1157,19 @@ const app = {
         });
         // Lắng nghe hành vi click vào listmusic Period
         periodlist.addEventListener('click', function(e) {
+            isperiodlistSelected = true;
+            isbeatlistSelected = false;
+            islistSelected = false;
+            ispoplistSelected = false;
+            isindielistSelected = false;
+            isremixlistSelected = false;
+            israplistSelected = false;
             const songperiod = e.target.closest('.itemlist:not(.active)');
             if (songperiod) { 
                 //Xử lý click vào danh sách pop
                 const selectedIndex = Number(songperiod.dataset.index);
                 _this.currentIndex = selectedIndex;
-                const selectedSong = periodlist[selectedIndex];
+                const selectedSong = periodSongs[selectedIndex];
                 _this.loadCurrentSong(selectedSong);
                 _this.renderlistperiod();
                 audio.play();
@@ -1094,13 +1189,37 @@ const app = {
     },
     
     loadCurrentSong: function(){
-        heading.textContent = this.currentSong.name
-        cdThumb.style.backgroundImage = `url('${this.currentSong.image}')`
-        audio.src = this.currentSong.path
-        righting.textContent = this.currentSong.name
-        leftimg.style.backgroundImage = `url('${this.currentSong.image}')`
-        songname.textContent = this.currentSong.name
-        lyricsong.innerHTML = this.currentSong.lyrics
+        let currentSon;
+        if (islistSelected) {
+            currentSon = this.currentSong;
+        }
+        else if(isbeatlistSelected){
+            currentSon = this.currentSongBeat;
+        } 
+        else if(ispoplistSelected){
+            currentSon = this.currentSongPop;
+        } 
+        else if(isremixlistSelected){
+            currentSon = this.currentSongRemix;
+        } 
+        else if(israplistSelected){
+            currentSon = this.currentSongRap;
+        } 
+        else if(isindielistSelected){
+            currentSon = this.currentSongIndie;
+        } 
+        else if(isperiodlistSelected){
+            currentSon = this.currentSongPeriod;
+        } 
+        console.log(currentSon);
+    
+        heading.textContent = currentSon.name;
+        cdThumb.style.backgroundImage = `url('${currentSon.image}')`;
+        audio.src = currentSon.path;
+        righting.textContent = currentSon.name;
+        leftimg.style.backgroundImage = `url('${currentSon.image}')`;
+        songname.textContent = currentSon.name;
+        lyricsong.innerHTML = currentSon.lyrics;
     },
 
     loadConfig: function(){
