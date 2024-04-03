@@ -691,7 +691,7 @@ html,body{
 .container main .playlist .music-list .music-items{
     flex: 1;
     overflow-y: auto; 
-    padding-right: 30px;
+    padding-right: 2px;
 }
 
 .container main .playlist .music-list .music-items::-webkit-scrollbar {

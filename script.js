@@ -984,6 +984,7 @@ const app = {
                 beat.classList.add('active', _this.isgenre);
             } 
         }
+        //Xử lý sự kiện click vào items remix
         remix.onclick = function(e){
             if (!remix.classList.contains('active')) {
                 _this.isgenre = true;
@@ -992,6 +993,7 @@ const app = {
                 remix.classList.add('active', _this.isgenre);
             } 
         }
+        //Xử lý sự kiện click vào items rap
         rap.onclick = function(e){
             if (!rap.classList.contains('active')) {
                 _this.isgenre = true;
@@ -1000,6 +1002,7 @@ const app = {
                 rap.classList.add('active', _this.isgenre);
             } 
         }
+        //Xử lý sự kiện click vào items indie
         indie.onclick = function(e){
             if (!indie.classList.contains('active')) {
                 _this.isgenre = true;
@@ -1008,6 +1011,7 @@ const app = {
                 indie.classList.add('active', _this.isgenre);
             } 
         }
+        //Xử lý sự kiện click vào items period
         period.onclick = function(e){
             if (!period.classList.contains('active')) {
                 _this.isgenre = true;
@@ -1028,7 +1032,7 @@ const app = {
             indie.classList.remove('active',_this.isgenre)
             period.classList.remove('active',_this.isgenre)
         }
-
+       
         // Lắng nghe hành vi click vào playlist
         playlist.addEventListener('click', function(e) {
             islistSelected = true;
@@ -1189,7 +1193,20 @@ const app = {
     },
     
     loadCurrentSong: function(){
+        
         let currentSon;
+        currentSon = this.currentSong;
+        // Load bài đầu tiên
+        do{
+            heading.textContent = currentSon.name;
+            cdThumb.style.backgroundImage = `url('${currentSon.image}')`;
+            audio.src = currentSon.path;
+            righting.textContent = currentSon.name;
+            leftimg.style.backgroundImage = `url('${currentSon.image}')`;
+            songname.textContent = currentSon.name;
+            lyricsong.innerHTML = currentSon.lyrics;
+        }
+        while(!currentSon);
         if (islistSelected) {
             currentSon = this.currentSong;
         }
@@ -1264,6 +1281,9 @@ const app = {
         // Lắng nghe sự kiện / Sử lý các sự kiện DOM events
         this.handleEvents();
 
+        // Lấy ra bài hát
+        this.render();
+        
         // Lấy bài hát trong list music
         this.renderlistpop();
         this.renderlistbeat();
@@ -1271,9 +1291,6 @@ const app = {
         this.renderlistrap();
         this.renderlistindie();
         this.renderlistperiod();
-        
-        // Lấy ra bài hát
-        this.render();
         
         // Tải thông tin bài hát vào UI khi chạy ứng dụng
         this.loadCurrentSong();
