@@ -1543,6 +1543,10 @@ html,body{
         margin: 0px;
         
     }
+
+    .container main .playlist .music-list .music-items .item{
+        padding: 15px;
+    }
     
     
 }
