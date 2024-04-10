@@ -4,7 +4,7 @@ In this project, I have created a simple application to hear surprise, which use
 
 # Screenshot with Responsive
 * **PC**
-![screenshot](assets\ScreenShot_PC.png)
+![screenshot](assets/ScreenShot_PC.png)
 * **Tablet**
 ![screenshot](assets/Screenshot_Tablet.png)
 * **Mobile**
